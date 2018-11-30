@@ -7,11 +7,11 @@ import android.content.Context;
 
 import com.vyankatesh.expensetracker.util.Constants;
 
-@Database(entities = {Categories.class}, version = 1)
-abstract class AppDatabase extends RoomDatabase {
+@Database(entities = {Categories.class}, version = 1, exportSchema = false)
+public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase INSTANCE;
 
-    static AppDatabase getDatabase(final Context context) {
+    public static AppDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (AppDatabase.class) {
                 if (INSTANCE == null) {
@@ -24,6 +24,6 @@ abstract class AppDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    abstract CategoriesDao categoriesDao();
+    public abstract CategoriesDao categoriesDao();
 
 }
