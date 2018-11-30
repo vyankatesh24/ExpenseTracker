@@ -26,3 +26,7 @@ To now update your local copy type <br> `git fetch upstream` <br> `git merge ups
 6. Commit with a suitable message `git commit -m " Changes made "`
 7. Push `git push origin branch_name`
 8. Go to the Github Repository and create a pull request
+
+
+## Communication Channel
+[https://groups.google.com/forum/#!forum/expense-tracker/join](Google Group)
