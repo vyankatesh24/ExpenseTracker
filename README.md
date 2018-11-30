@@ -29,4 +29,4 @@ To now update your local copy type <br> `git fetch upstream` <br> `git merge ups
 
 
 ## Communication Channel
-[https://groups.google.com/forum/#!forum/expense-tracker/join](Google Group)
+[Google Group](https://groups.google.com/forum/#!forum/expense-tracker/join)
