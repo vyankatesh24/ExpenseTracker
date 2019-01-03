@@ -17,10 +17,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.vyankatesh.expensetracker.R;
 import com.vyankatesh.expensetracker.adapter.CategoriesAdapter;
 import com.vyankatesh.expensetracker.database.AppDatabase;
 import com.vyankatesh.expensetracker.database.Categories;
+import com.vyankatesh.expensetracker.database.DatabaseHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,12 +70,27 @@ public class MainTab3 extends Fragment implements CategoriesAdapter.OnItemClickL
             mCategoriesAdapter.setItems(mCategoriesList);
         });
         builder.setNegativeButton("Edit Category", (dialog, which) -> {
-
+            updateCategory(itemID);
         });
         builder.setTitle("Choose any option");
         builder.setMessage("");
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void updateCategory(int itemID) {
+
+        new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
+                .title("Update Category")
+                .content("Enter New Name")
+                .input("", null, (dialog, input) -> {
+                    AppDatabase database = AppDatabase.getDatabase(Objects.requireNonNull(getContext()).getApplicationContext());
+                    AsyncTask.execute(() -> database.categoriesDao().updateCategory(itemID, String.valueOf(input)));
+                    new LoadCategories().execute();
+                    mCategoriesAdapter.setItems(mCategoriesList);
+                })
+                .show();
+
     }
 
     @SuppressLint("StaticFieldLeak")
