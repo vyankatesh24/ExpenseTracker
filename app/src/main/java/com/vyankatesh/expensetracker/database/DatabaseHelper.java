@@ -16,6 +16,13 @@ public class DatabaseHelper {
         new Insert().execute(new Categories(category));
     }
 
+    public void insertTransaction(Transactions transaction){
+        AsyncTask.execute(() -> {
+            AppDatabase database = AppDatabase.getDatabase(mContext.getApplicationContext());
+            database.transactionsDao().insert(transaction);
+        });
+    }
+
     @SuppressLint("StaticFieldLeak")
     private class Insert extends AsyncTask<Categories, Void, Void> {
 

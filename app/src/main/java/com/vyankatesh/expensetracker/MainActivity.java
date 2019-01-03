@@ -1,18 +1,27 @@
 package com.vyankatesh.expensetracker;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.vyankatesh.expensetracker.database.DatabaseHelper;
+import com.vyankatesh.expensetracker.database.Transactions;
 import com.vyankatesh.expensetracker.fragment.MainTab1;
 import com.vyankatesh.expensetracker.fragment.MainTab2;
 import com.vyankatesh.expensetracker.fragment.MainTab3;
@@ -90,11 +99,31 @@ public class MainActivity extends AppCompatActivity {
             case 0:
                 break;
             case 1:
+                insertTransaction();
                 break;
             case 2:
                 insertCategory();
                 break;
         }
+    }
+
+    private void insertTransaction() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View rootView = inflater.inflate(R.layout.add_transaction_dialog, null);
+        builder.setView(rootView);
+        builder.setTitle("Add New Transaction");
+        EditText category = rootView.findViewById(R.id.category_ed);
+        EditText date = rootView.findViewById(R.id.date_ed);
+        EditText amount = rootView.findViewById(R.id.amount_ed);
+        EditText note = rootView.findViewById(R.id.note_ed);
+        builder.setPositiveButton("OKAY", (dialog, which) -> {
+            Transactions transaction = new Transactions(category.getText().toString(),
+                    date.getText().toString(), Integer.parseInt(amount.getText().toString()), note.getText().toString());
+            new DatabaseHelper(getApplicationContext()).insertTransaction(transaction);
+            Toast.makeText(getApplicationContext(), "Added Transaction Successfully", Toast.LENGTH_SHORT).show();
+        });
+        builder.create().show();
     }
 
     public void insertCategory() {
